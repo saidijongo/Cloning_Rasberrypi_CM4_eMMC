@@ -1,5 +1,7 @@
 ## First alternative
+
 Step 1: Backup the Source CM4 eMMC
+
 Connect the source CM4 and the target CM4 to a Linux system via USB.
 
 Boot both CM4 devices using the USB mass-storage gadget. You can use the rpiboot tool for this.
