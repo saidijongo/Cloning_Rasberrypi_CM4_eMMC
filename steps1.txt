@@ -40,3 +40,71 @@ sudo rpi-clone -s /dev/mmcblk0 -t /dev/mmcblk1
 (Replace /dev/mmcblk0 and /dev/mmcblk1 with the appropriate device identifiers for your setup.)
 
 
+##########################################################
+
+
+#### Step 1: Enable SSH on the Source Raspberry Pi CM4
+
+1. Boot up the source Raspberry Pi CM4.
+2. Enable SSH on the source CM4 by creating an empty file named `ssh` in the `/boot` directory. You can do this by running:
+
+    touch /boot/ssh
+
+3. Reboot the source CM4 to enable SSH:
+    sudo reboot
+
+#### Step 2: Connect to the Source Raspberry Pi CM4 via SSH
+
+1. Find the IP address of the source CM4. This can be done using your router's interface or tools like `nmap`:
+    nmap -p 22 192.168.1.0/24
+
+    Replace `192.168.1.0` with your network's subnet.
+
+2. Connect to the source CM4 via SSH:
+
+    ssh pi@<source_IP_address>
+
+    Default password: `raspberry`
+
+#### Step 3: Create an Image of the Source CM4
+
+1. Use `dd` to create an image of the source CM4's eMMC storage. Execute the following command on the source CM4 via SSH:
+
+    sudo dd if=/dev/mmcblk0 bs=4M status=progress | gzip > /path/to/source_cm4_image.img.gz
+
+    Replace `/path/to/source_cm4_image.img.gz` with the desired path on the source CM4 to store the image.
+
+2. Once the process is complete, download the image to your local machine using `scp`:
+
+    scp pi@<source_IP_address>:/path/to/source_cm4_image.img.gz /path/on/local/machine/
+
+#### Step 4: Copy the Image to the Target Raspberry Pi CM4
+
+1. Boot up the target Raspberry Pi CM4.
+
+2. Enable SSH on the target CM4 using the same steps as in Step 1.
+
+3. Reboot the target CM4:
+    sudo reboot
+
+4. Find the IP address of the target CM4.
+
+5. Copy the image to the target CM4 using `scp`:
+    scp /path/on/local/machine/source_cm4_image.img.gz pi@<target_IP_address>:/path/on/target_cm4/
+
+#### Step 5: Write the Image to the Target CM4's eMMC Storage
+
+1. Connect to the target CM4 via SSH:
+    ssh pi@<target_IP_address>
+
+2. Navigate to the directory where the image is located:
+    cd /path/on/target_cm4/
+
+3. Use `dd` to write the image to the target CM4's eMMC storage:
+
+    gzip -dc source_cm4_image.img.gz | sudo dd of=/dev/mmcblk0 bs=4M status=progress
+
+4. Once the process is complete, reboot the target CM4:
+
+    sudo reboot
+
