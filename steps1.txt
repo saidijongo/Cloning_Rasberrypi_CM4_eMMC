@@ -87,6 +87,8 @@ sudo rpi-clone -s /dev/mmcblk0 -t /dev/mmcblk1
 3. Reboot the target CM4:
     sudo reboot
 
+
+
 4. Find the IP address of the target CM4.
 
 5. Copy the image to the target CM4 using `scp`:
