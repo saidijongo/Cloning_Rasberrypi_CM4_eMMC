@@ -8,5 +8,5 @@ sudo dd if=/dev/sdX of=cm4_isanim.img bs=4M status=progress
 ###############
 sudo dd if=cm4_isanim.img of=/dev/sdY bs=4M status=progress
 
-#rpiboot
+#rpiboot for windows pc and cm4
 https://m.blog.naver.com/raspwine/222350890034
